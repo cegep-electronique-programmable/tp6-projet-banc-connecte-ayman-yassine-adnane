@@ -9,4 +9,7 @@ void initBandeLED();
 // met la bande en rouge (charge) ou jaune (libre)
 void updateBandeLED(bool chargeActive);
 
+void setLumiLED(uint8_t niveau);
+
+
 #endif

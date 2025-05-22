@@ -28,3 +28,11 @@ void updateBandeLED(bool chargeActive) {
     }
     bande.show();
 }
+
+
+void setLumiLED(uint8_t niveau) 
+{
+    bande.setBrightness(niveau);
+    bande.show(); // pour que le changement soit visible
+}
+

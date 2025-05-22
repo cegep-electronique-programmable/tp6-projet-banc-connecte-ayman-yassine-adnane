@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "affichage.h"
+
 #include <Wire.h>
 #include "APDS9930.h"
 #include "LEDAYMAN.h"
@@ -10,9 +10,13 @@
 APDS9930 capteur = APDS9930();
 void setup() {
   Serial.begin(9600);
-  Wire.begin(D2, D1); //  SDA, SCL
 
+  // initialisation LED
+  pinMode(inputchargeur, INPUT);
+  initBandeLED();
   
+
+  Wire.begin(D2, D1); //  SDA, SCL
   // initialisation capteur
   if (capteur.init()) 
   {
@@ -30,10 +34,6 @@ void setup() {
 
 
 
-  // initialisation 
-  pinMode(inputchargeur, INPUT);
-
-  initBandeLED();
   
 }
 
@@ -42,7 +42,22 @@ void loop() {
   float lux = 20;
   uint16_t proximite = 0;
 
-  if (capteur.readAmbientLightLux(lux)) 
+  int etat = digitalRead(inputchargeur);
+      
+  updateBandeLED(etat == LOW);  // faire l'update des leds
+  
+  if (lux < 10) 
+  {
+      setLumiLED(50);
+  }
+  else
+  {
+      setLumiLED(100);
+  }
+  
+  
+
+  if (capteur.readAmbientLightLux(lux))  // lire luminosite
   {
     Serial.print("Luminosite (lux): ");
     Serial.println(lux);
@@ -52,7 +67,7 @@ void loop() {
     Serial.println("Erreur de lecture de la luminosite");
   }
 
-  if (capteur.readProximity(proximite)) 
+  if (capteur.readProximity(proximite))  // lire proximite
   {
     Serial.print("Proximite : ");
     Serial.println(proximite);
@@ -65,18 +80,8 @@ void loop() {
   delay(500);
 
 
-  int etat = digitalRead(inputchargeur);
-      
-  updateBandeLED(etat == LOW);  // faire l'update des leds
+
   
-  if (capteur.readAmbientLightLux(lux) < 10) 
-  {
-      bande.setBrightness(50);
-  }
-  else
-  {
-    bande.setBrightness(100);
-  }
     
 
 }
