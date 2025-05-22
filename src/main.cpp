@@ -1,16 +1,60 @@
 #include <Arduino.h>
 #include "affichage.h"
+#include <Wire.h>
+#include "APDS9930.h"
 
-// the setup function runs once when you press reset or power the board
+
+APDS9930 capteur = APDS9930();
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
+  Serial.begin(9600);
+  Wire.begin(D2, D1); //  SDA, SCL
+
+  
+
+  if (capteur.init()) 
+  {
+    Serial.println("Capteur initialise avec succes");
+  } 
+  else 
+  {
+    Serial.println("Echec de l'initialisation du capteur");
+    
+  }
+
+  capteur.enableLightSensor(false);
+  capteur.enableProximitySensor(false);
+  delay(500);
+
+  
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-  delay(1000);                      // wait for 1second
-  digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-  delay(100);                      // wait for 100ms
+  float lux = 0;
+  uint16_t proximite = 0;
+
+  if (capteur.readAmbientLightLux(lux)) 
+  {
+    Serial.print("Luminosite (lux): ");
+    Serial.println(lux);
+  } 
+  else 
+  {
+    Serial.println("Erreur de lecture de la luminosite.");
+  }
+
+  if (capteur.readProximity(proximite)) 
+  {
+    Serial.print("Proximite : ");
+    Serial.println(proximite);
+  } 
+  else 
+  {
+    Serial.println("Erreur de lecture de la proximite.");
+  }
+
+  delay(500);
+
+
 }
