@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "LEDAYMAN.h"
 
-#define inputchargeur D3  // pin utilisé pour recevoir les informations de charge
+#define inputchargeur D2  // pin utilisé pour recevoir les informations de charge
 
 void setup() {
     Serial.begin(9600);

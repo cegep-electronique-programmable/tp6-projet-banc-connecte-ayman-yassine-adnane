@@ -2,8 +2,8 @@
 #include <Adafruit_NeoPixel.h>
 
 
-#define pinLED D4 // pin data de la bande LED
-#define nbLED 10 // nombre de LED
+#define pinLED D3 // pin data de la bande LED
+#define nbLED 20 // nombre de LED
 
 
 static Adafruit_NeoPixel bande(nbLED, pinLED, NEO_GRB + NEO_KHZ800);
@@ -17,9 +17,12 @@ void initBandeLED() {
 void updateBandeLED(bool chargeActive) {
     uint8_t r, g, b;
 
-    if (chargeActive) {
+    if (chargeActive) 
+    {
         r = 255; g = 0;   b = 0;   // rouge si en charge
-    } else {
+    } 
+    else 
+    {
         r = 255; g = 255; b = 0;   // jaune si libre
     }
 
