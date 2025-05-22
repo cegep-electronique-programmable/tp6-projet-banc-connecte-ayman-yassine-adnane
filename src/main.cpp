@@ -1,34 +1,19 @@
 #include <Arduino.h>
-#include "affichage.h"
-#include "LEDAYMAN.h" 
-#include "Adafruit_NeoPixel.h"
+#include "LEDAYMAN.h"
 
+#define inputchargeur D3  // pin utilisé pour recevoir les informations de charge
 
-// #define PIN         6
-// #define NUMPIXELS   8
-
-// Adafruit_NeoPixel bande(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-// the setup function runs once when you press reset or power the board
 void setup() {
+    Serial.begin(9600);
+    pinMode(inputchargeur, INPUT);
 
-  ecran.begin();
-  ecran.setFont(u8g2_font_ncenB08_tr); // choisir police
-  // initialize digital pin LED_BUILTIN as an output.
-  // pinMode(LED_BUILTIN, OUTPUT);
-  // bande.begin();               
-  // bande.setBrightness(100);    
-  // bande.fill(bande.Color(255, 0, 0)); 
-  // bande.show();  
-
+    initBandeLED();
 }
 
-// the loop function runs over and over again forever
 void loop() {
-  // digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-  // delay(1000);                      // wait for 1second
-  // digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-  // delay(100);                      // wait for 100ms
-  afficherInfo(5,2);
-  delay(1000);
+    int etat = digitalRead(inputchargeur);
+    
+    updateBandeLED(etat == LOW);  // faire l'update des leds
 
+    delay(500);
 }
